@@ -14,4 +14,9 @@ def findName(username):
     return render_template("name.html", username=username)
 
 
+@app.errorhandler(404)
+def pageNotFound(e):
+    return render_template("404.html"), 404
+
+
 app.run(debug=True)
