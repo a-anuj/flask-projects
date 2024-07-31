@@ -1,11 +1,17 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block content %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Personal Details</title>
 </head>
+
+
 <body>
-<h1>Hello {{ username }}</h1>
+
+<h1>Hello {{ username|title }}</h1>
 
 </body>
+
 </html>
+{% endblock %}

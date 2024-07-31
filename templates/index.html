@@ -1,14 +1,19 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block content %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>WEBPAGE</title>
 </head>
+
 <body>
+
 <h1> Hello All</h1>
 <h2>Concepts which I know to work with</h2>
 {% for item in learn_list %}
     <strong>{{ item|title }}</strong><br>
 {% endfor %}
 </body>
+
 </html>
+{% endblock %}
