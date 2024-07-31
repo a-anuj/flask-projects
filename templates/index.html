@@ -6,5 +6,9 @@
 </head>
 <body>
 <h1> Hello All</h1>
+<h2>Concepts which I know to work with</h2>
+{% for item in learn_list %}
+    <strong>{{ item|title }}</strong><br>
+{% endfor %}
 </body>
 </html>

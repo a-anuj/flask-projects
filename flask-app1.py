@@ -5,12 +5,13 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    learn_list = ["flask", "jinja2"]
+    return render_template("index.html", learn_list=learn_list)
 
 
 @app.route('/name/<username>')
 def findName(username):
-    return "Hello {}".format(username)
+    return render_template("name.html", username=username)
 
 
 app.run(debug=True)
