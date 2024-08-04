@@ -11,8 +11,10 @@
 
 {% if name %}
     <h1> Hello {{ name }}</h1>
+    <br>
+    <img src="{{ url_for('static', filename = 'images/image_mine.jpg') }}" alt="My_photo">
 {% else %}
-    <h1>What's your name</h1>
+    <h1>Question Page</h1>
     <br>
     <form method = 'POST'>
         {{ form.hidden_tag() }}
