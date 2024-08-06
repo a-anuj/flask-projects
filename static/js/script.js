@@ -1,0 +1,1 @@
+document.getElementById('demo').innerText = "Welcome to my page!"
