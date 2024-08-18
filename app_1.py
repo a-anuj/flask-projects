@@ -82,7 +82,7 @@ def add_user():
     return render_template("add_user.html", form=form, name=name, our_users=our_users)
 
 
-@app.route('/update/<int:id>', methods=['GET', 'POST'])
+@app.route('/update/<int:id>', methods=['GET','POST'])
 def update(id):
     form = UserForm()
     name_to_update = Users.query.get_or_404(id)
