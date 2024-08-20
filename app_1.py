@@ -51,6 +51,12 @@ class SimpleForm(FlaskForm):
     submit = SubmitField("Submit")
 
 
+class PasswordForm(FlaskForm):
+    email = StringField("What's your email", validators=[data_required()])
+    password_hash = PasswordField("What's your password", validators=[data_required()])
+    submit = SubmitField("Submit")
+
+
 @app.route('/')
 def index():
     learn_list = ["flask", "jinja2"]
@@ -135,6 +141,29 @@ def update(id):
 
     else:
         return render_template("update.html", form=form, name_to_update=name_to_update, id=id)
+
+
+@app.route('/test_pw', methods=['GET', "POST"])
+def test_pw():
+    email = None
+    password = None
+    pw_to_check = None
+    passed = None
+
+    form = PasswordForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password_hash.data
+        form.email.data = ''
+        form.password_hash.data = ''
+        pw_to_check = Users.query.filter_by(email=email).first()
+        passed = check_password_hash(pw_to_check.password_hash, password)
+    return render_template("test_pw.html",
+                           email=email,
+                           password=password,
+                           form=form,
+                           pw_to_check=pw_to_check,
+                           passed=passed)
 
 
 if __name__ == '__main__':
