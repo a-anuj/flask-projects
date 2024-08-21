@@ -9,9 +9,8 @@
 </div>
 {% endfor %}
 
-<h1>Add Blog </h1><br>
+
 <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
-    <br>
     <form method = 'POST'>
         {{ form.hidden_tag() }}
         {{ form.title.label(class="form-label") }}
@@ -31,6 +30,7 @@
         {{ form.submit(class="btn btn-secondary") }}
     </form>
 </div>
-<br>
+
+<a href="{{ url_for('Posts') }}" class="btn btn-outline-secondary" >Back</a>
 
 {% endblock %}

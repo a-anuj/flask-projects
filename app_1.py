@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, request
+from flask import Flask, render_template, flash, request, redirect, url_for
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError
 from wtforms.validators import data_required, EqualTo
@@ -78,7 +78,7 @@ class PostForm(FlaskForm):
 
 @app.route('/')
 def index():
-    learn_list = ["flask", "jinja2"]
+    learn_list = ["flask", "jinja2", "Flask Forms", "SQLAlchemy", "Werkzeug", "MySQL", "Migration"]
     return render_template("index.html", learn_list=learn_list)
 
 
@@ -194,6 +194,27 @@ def Posts():
 def view_posts(id):
     view_post = posts.query.get_or_404(id)
     return render_template('spe_blog.html', view_post=view_post)
+
+
+@app.route('/posts/edit/<int:id>', methods=['POST', 'GET'])
+def edit_post(id):
+    form = PostForm()
+    post = posts.query.get_or_404(id)
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.author = form.author.data
+        post.slug = form.slug.data
+        post.content = form.content.data
+
+        db.session.add(post)
+        db.session.commit()
+        flash("Blog Updated Successfully")
+        redirect(url_for("view_posts", id=post.id))
+    form.title.data = post.title
+    form.content.data = post.content
+    form.slug.data = post.slug
+    form.author.data = post.author
+    return render_template("edit_post.html", form=form)
 
 
 @app.route('/test_pw', methods=['GET', "POST"])
