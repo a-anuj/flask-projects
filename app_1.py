@@ -184,6 +184,12 @@ def add_post():
     return render_template("add_post.html", form=form)
 
 
+@app.route('/posts')
+def Posts():
+    all_posts = posts.query.order_by(posts.date_posted)
+    return render_template('blog_posts.html', all_posts=all_posts)
+
+
 @app.route('/test_pw', methods=['GET', "POST"])
 def test_pw():
     email = None
