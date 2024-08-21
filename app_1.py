@@ -190,6 +190,12 @@ def Posts():
     return render_template('blog_posts.html', all_posts=all_posts)
 
 
+@app.route('/posts/<int:id>')
+def view_posts(id):
+    view_post = posts.query.get_or_404(id)
+    return render_template('spe_blog.html', view_post=view_post)
+
+
 @app.route('/test_pw', methods=['GET', "POST"])
 def test_pw():
     email = None

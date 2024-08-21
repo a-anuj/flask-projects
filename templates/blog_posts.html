@@ -14,7 +14,7 @@
         <h1>{{ all_post.title }}</h1><br>
         <h3><small>By {{ all_post.author }}</small></h3><br>
         <h5>Date : {{ all_post.date_posted }}</h5><br>
-        <h5>{{ all_post.content }}</h5>
+        <a href="{{ url_for('view_posts',id=all_post.id)}}" class="btn btn-outline-secondary">View Blog</a>
     </div>
     {% endfor %}
 
