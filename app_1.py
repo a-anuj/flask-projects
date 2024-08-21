@@ -6,7 +6,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import date, time
+from datetime import date
+from wtforms.widgets import TextArea
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:anuj2006@localhost/list_users'
@@ -22,6 +23,15 @@ class Users(db.Model):
     color = db.Column(db.String(120))
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
     password_hash = db.Column(db.String(200))
+
+
+class posts(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255))
+    author = db.Column(db.String(255))
+    slug = db.Column(db.String(255))
+    content = db.Column(db.Text)
+    date_posted = db.Column(db.DateTime, default=datetime.utcnow())
 
     @property
     def password(self):
@@ -56,6 +66,14 @@ class PasswordForm(FlaskForm):
     email = StringField("What's your email", validators=[data_required()])
     password_hash = PasswordField("What's your password", validators=[data_required()])
     submit = SubmitField("Submit")
+
+
+class PostForm(FlaskForm):
+    title = StringField("Title", validators=[data_required()])
+    content = StringField("Content", validators=[data_required()], widget=TextArea())
+    author = StringField("Author", validators=[data_required()])
+    slug = StringField("Slug", validators=[data_required()])
+    submit = SubmitField("Submit", validators=[data_required()])
 
 
 @app.route('/')
@@ -149,6 +167,23 @@ def return_date():
     return {"Date": date.today()}
 
 
+@app.route('/add_post', methods=['GET', 'POST'])
+def add_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = posts(title=form.title.data, content=form.content.data, author=form.author.data, slug=form.slug.data)
+        form.title.data = ''
+        form.author.data = ''
+        form.content.data = ''
+        form.slug.data = ''
+
+        db.session.add(post)
+        db.session.commit()
+
+        flash("Blog Post submitted successfully!")
+    return render_template("add_post.html", form=form)
+
+
 @app.route('/test_pw', methods=['GET', "POST"])
 def test_pw():
     email = None
@@ -160,6 +195,7 @@ def test_pw():
     if form.validate_on_submit():
         email = form.email.data
         password = form.password_hash.data
+        value = form.password_hash.data
         form.email.data = ''
         form.password_hash.data = ''
         pw_to_check = Users.query.filter_by(email=email).first()
@@ -169,7 +205,8 @@ def test_pw():
                            password=password,
                            form=form,
                            pw_to_check=pw_to_check,
-                           passed=passed)
+                           passed=passed
+                           )
 
 
 if __name__ == '__main__':
