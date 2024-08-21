@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import date, time
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:anuj2006@localhost/list_users'
@@ -141,6 +142,11 @@ def update(id):
 
     else:
         return render_template("update.html", form=form, name_to_update=name_to_update, id=id)
+
+
+@app.route('/date')
+def return_date():
+    return {"Date": date.today()}
 
 
 @app.route('/test_pw', methods=['GET', "POST"])
