@@ -8,6 +8,7 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import date
 from wtforms.widgets import TextArea
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:anuj2006@localhost/list_users'
@@ -15,10 +16,20 @@ app.config['SECRET_KEY'] = "mahi@1234"
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
-class Users(db.Model):
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.query.get(int(user_id))
+
+
+class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
+    username = db.Column(db.String(50), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False)
     color = db.Column(db.String(120))
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
@@ -50,6 +61,7 @@ class posts(db.Model):
 
 class UserForm(FlaskForm):
     name = StringField("Name", validators=[data_required()])
+    username = StringField("Username", validators=[data_required()])
     email = StringField("Email", validators=[data_required()])
     color = StringField("Favorite color")
     submit = SubmitField("Submit")
@@ -74,6 +86,12 @@ class PostForm(FlaskForm):
     author = StringField("Author", validators=[data_required()])
     slug = StringField("Slug", validators=[data_required()])
     submit = SubmitField("Submit", validators=[data_required()])
+
+
+class LoginForm(FlaskForm):
+    username = StringField("Username", validators=[data_required()])
+    password = PasswordField("Password", validators=[data_required()])
+    submit = SubmitField("Submit")
 
 
 @app.route('/')
@@ -111,12 +129,13 @@ def add_user():
         user = Users.query.filter_by(email=form.email.data).first()
         if user is None:
             hashed_password = generate_password_hash(form.password_hash.data)
-            user = Users(name=form.name.data, email=form.email.data, color=form.color.data,
+            user = Users(name=form.name.data,username=form.username.data, email=form.email.data, color=form.color.data,
                          password_hash=hashed_password)
             db.session.add(user)
             db.session.commit()
         name = form.name.data
         form.name.data = ''
+        form.username.data = ''
         form.email.data = ''
         form.color.data = ''
         form.password_hash.data = ''
@@ -259,6 +278,37 @@ def test_pw():
                            pw_to_check=pw_to_check,
                            passed=passed
                            )
+
+
+@app.route('/login/', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = Users.query.filter_by(username=form.username.data).first()
+        if user:
+            if check_password_hash(user.password_hash, form.password.data):
+                login_user(user)
+                flash("Log in Successfull")
+                return redirect(url_for('dashboard'))
+            else:
+                flash("Wrong Password")
+        else:
+            flash("User Not found")
+    return render_template('login.html', form=form)
+
+
+@app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
+def dashboard():
+    return render_template("dashboard.html")
+
+
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    flash("Log out successfull")
+    return redirect(url_for('login'))
 
 
 if __name__ == '__main__':
