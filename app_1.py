@@ -217,6 +217,25 @@ def edit_post(id):
     return render_template("edit_post.html", form=form)
 
 
+@app.route('/delete/posts/<int:id>')
+def delete_post(id):
+    post = posts.query.get_or_404(id)
+    try:
+        db.session.delete(post)
+        db.session.commit()
+
+        flash("Blog deleted successfully")
+
+        all_posts = posts.query.order_by(posts.date_posted)
+        return render_template('blog_posts.html', all_posts=all_posts)
+
+    except:
+        flash("Error Occurred")
+
+        all_posts = posts.query.order_by(posts.date_posted)
+        return render_template('blog_posts.html', all_posts=all_posts)
+
+
 @app.route('/test_pw', methods=['GET', "POST"])
 def test_pw():
     email = None
