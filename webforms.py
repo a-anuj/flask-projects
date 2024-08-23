@@ -37,3 +37,8 @@ class LoginForm(FlaskForm):
     username = StringField("Username", validators=[data_required()])
     password = PasswordField("Password", validators=[data_required()])
     submit = SubmitField("Submit")
+
+
+class SearchForm(FlaskForm):
+    searched = StringField("Searched", validators=[data_required()])
+    submit = SubmitField("Submit")

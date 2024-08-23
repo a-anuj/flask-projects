@@ -5,7 +5,7 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import date
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
-from webforms import UserForm, PostForm, SimpleForm, PasswordForm, LoginForm
+from webforms import UserForm, PostForm, SimpleForm, PasswordForm, LoginForm, SearchForm
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:anuj2006@localhost/list_users'
@@ -229,6 +229,23 @@ def delete_post(id):
         flash("Access denied!")
         all_posts = posts.query.order_by(posts.date_posted)
         return render_template('blog_posts.html', all_posts=all_posts)
+
+
+@app.context_processor
+def base():
+    form = SearchForm()
+    return dict(form=form)
+
+
+@app.route('/search', methods=['POST'])
+def search():
+    form = SearchForm()
+    all_posts = posts.query
+    if form.validate_on_submit():
+        post_searched = form.searched.data
+        all_posts = all_posts.filter(posts.content.like('%' + post_searched + '%'))
+        all_posts = all_posts.order_by(posts.title).all()
+        return render_template("search.html", form=form, searched=post_searched, all_posts=all_posts)
 
 
 @app.route('/test_pw', methods=['GET', "POST"])
