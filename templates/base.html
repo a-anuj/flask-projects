@@ -9,14 +9,17 @@
 
 </head>
 <style>
-    .container{
+    .container1{
     margin:30px
+    }
+    .container{
+    margin:0px
     }
 </style>
 
 <body>
     {% include 'navbar.html' %}
-    <div class="container">
+    <div class="container1">
         {% block content %}
         {% endblock %}
     </div>
