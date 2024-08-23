@@ -194,10 +194,15 @@ def edit_post(id):
         db.session.commit()
         flash("Blog Updated Successfully")
         redirect(url_for("view_posts", id=post.id))
-    form.title.data = post.title
-    form.content.data = post.content
-    form.slug.data = post.slug
-    return render_template("edit_post.html", form=form)
+    if post.poster_id == current_user.id:
+        form.title.data = post.title
+        form.content.data = post.content
+        form.slug.data = post.slug
+        return render_template("edit_post.html", form=form)
+    else:
+        flash("You cannot edit other user's blog")
+        all_posts = posts.query.order_by(posts.date_posted)
+        return render_template('blog_posts.html', all_posts=all_posts)
 
 
 @app.route('/delete/posts/<int:id>')
