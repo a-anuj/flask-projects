@@ -66,6 +66,17 @@ def index():
     return render_template("index.html", learn_list=learn_list)
 
 
+@app.route('/admin')
+@login_required
+def admin():
+    id = current_user.id
+    if id == 34:
+        return render_template("admin.html")
+    else:
+        flash("You must be a admin to visit this page")
+        return redirect(url_for('dashboard'))
+
+
 @app.route('/name/<username>')
 def findName(username):
     return render_template("name.html", username=username)
