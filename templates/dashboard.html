@@ -14,10 +14,9 @@
 
 <div class="card">
     <div class="card-header">
-        {{ current_user.name }}
+        {{ current_user.name }}'s Dashboard
     </div>
     <div class="card-body">
-        <h5 class="card-title">{{ current_user.name }}'s Dashboard</h5>
         <p class="card-text">
             <strong>Name:</strong>
             {{ current_user.name }}<br>
@@ -35,11 +34,37 @@
             {{ current_user.date_added }}<br>
         </p>
         <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a>
+        <a href="{{ url_for('update', id=current_user.id) }}" class="btn btn-secondary">Update User</a>
     </div>
 </div>
 
 <br>
+<div class="card">
 
+<div class="card-header">
+    Update {{ current_user.name }}'s Profile
+</div>
+<div class="card-body">
+    <form method = 'POST'>
+        {{ form.hidden_tag() }}
+        {{ form.name.label(class="form-label") }}
+        {{ form.name(class="form-control", value = name_to_update.name) }}
+        <br>
+
+        {{ form.username.label(class="form-label") }}
+        {{ form.username(class="form-control", value = name_to_update.username) }}
+        <br>
+
+        {{ form.email.label(class="form-label") }}
+        {{ form.email(class="form-control", value = name_to_update.email) }}
+        <br>
+        {{ form.color.label(class="form-label") }}
+        {{ form.color(class="form-control", value = name_to_update.color) }}
+        <br>
+        {{ form.submit(class="btn btn-secondary") }}
+        <a href="{{ url_for('delete', id = id )}}" class = "btn btn-danger">Delete</a>
+    </form>
+</div></div>
 
 {% endblock %}
 

@@ -187,6 +187,7 @@ def return_date():
 
 
 @app.route('/add_post', methods=['GET', 'POST'])
+@login_required
 def add_post():
     form = PostForm()
     if form.validate_on_submit():
@@ -216,6 +217,7 @@ def view_posts(id):
 
 
 @app.route('/posts/edit/<int:id>', methods=['POST', 'GET'])
+@login_required
 def edit_post(id):
     form = PostForm()
     post = posts.query.get_or_404(id)
@@ -237,6 +239,7 @@ def edit_post(id):
 
 
 @app.route('/delete/posts/<int:id>')
+@login_required
 def delete_post(id):
     post = posts.query.get_or_404(id)
     try:
@@ -300,7 +303,24 @@ def login():
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    return render_template("dashboard.html")
+    form = UserForm()
+    id = current_user.id
+    name_to_update = Users.query.get_or_404(id)
+    if request.method == "POST":
+        name_to_update.name = request.form['name']
+        name_to_update.email = request.form['email']
+        name_to_update.color = request.form['color']
+        name_to_update.username = request.form['username']
+        try:
+            db.session.commit()
+            flash("User Updated Successfully")
+            return render_template("dashboard.html", form=form, name_to_update=name_to_update, id=id)
+        except:
+            flash("Error")
+            return render_template("dashboard.html", form=form, name_to_update=name_to_update, id=id)
+
+    else:
+        return render_template("dashboard.html", form=form, name_to_update=name_to_update, id=id)
 
 
 @app.route('/logout', methods=['GET', 'POST'])
