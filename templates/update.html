@@ -9,21 +9,8 @@
 </div>
 {% endfor %}
 
-{% if name %}
-<h1> Update User </h1>
-<table class="table table-hover table-bordered table-striped">
-    {% for our_user in our_users  %}
-    <tr>
-        <td>
-            {{ our_user.id }} . {{ our_user.name }} - {{ our_user.email }} - {{ our_user.color }} <br>
-        </td>
+{% if id == current_user.id %}
 
-    </tr>
-        {% endfor %}
-</table>
-<br>
-
-{% else %}
 <h1>Update User</h1>
 <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
     <br>
@@ -46,6 +33,12 @@
     </form>
 </div>
 <br>
+{% else %}
+<div class="alert alert-danger alert-dismissible show" role="alert">
+    Access Denied
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<h3> Sorry You cannot access another User's page :(</h3>
 
 {% endif %}
 {% endblock %}
