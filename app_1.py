@@ -31,15 +31,17 @@ class Users(db.Model, UserMixin):
     color = db.Column(db.String(120))
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
     password_hash = db.Column(db.String(200))
+    all_posts = db.relationship('posts', backref='poster')
 
 
 class posts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
-    author = db.Column(db.String(255))
+    #author = db.Column(db.String(255))
     slug = db.Column(db.String(255))
     content = db.Column(db.Text)
     date_posted = db.Column(db.DateTime, default=datetime.utcnow())
+    poster_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     @property
     def password(self):
@@ -153,9 +155,9 @@ def return_date():
 def add_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = posts(title=form.title.data, content=form.content.data, author=form.author.data, slug=form.slug.data)
+        poster = current_user.id
+        post = posts(title=form.title.data, content=form.content.data, poster_id=poster, slug=form.slug.data)
         form.title.data = ''
-        form.author.data = ''
         form.content.data = ''
         form.slug.data = ''
 
@@ -185,7 +187,6 @@ def edit_post(id):
     post = posts.query.get_or_404(id)
     if form.validate_on_submit():
         post.title = form.title.data
-        post.author = form.author.data
         post.slug = form.slug.data
         post.content = form.content.data
 
@@ -196,7 +197,6 @@ def edit_post(id):
     form.title.data = post.title
     form.content.data = post.content
     form.slug.data = post.slug
-    form.author.data = post.author
     return render_template("edit_post.html", form=form)
 
 

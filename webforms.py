@@ -28,7 +28,7 @@ class PasswordForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField("Title", validators=[data_required()])
     content = StringField("Content", validators=[data_required()], widget=TextArea())
-    author = StringField("Author", validators=[data_required()])
+    author = StringField("Author")
     slug = StringField("Slug", validators=[data_required()])
     submit = SubmitField("Submit", validators=[data_required()])
 
