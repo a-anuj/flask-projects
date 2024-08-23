@@ -204,18 +204,24 @@ def edit_post(id):
 @login_required
 def delete_post(id):
     post = posts.query.get_or_404(id)
-    try:
-        db.session.delete(post)
-        db.session.commit()
+    id = current_user.id
+    if id == post.poster.id:
+        try:
+            db.session.delete(post)
+            db.session.commit()
 
-        flash("Blog deleted successfully")
+            flash("Blog deleted successfully")
 
-        all_posts = posts.query.order_by(posts.date_posted)
-        return render_template('blog_posts.html', all_posts=all_posts)
+            all_posts = posts.query.order_by(posts.date_posted)
+            return render_template('blog_posts.html', all_posts=all_posts)
 
-    except:
-        flash("Error Occurred")
+        except:
+            flash("Error Occurred")
 
+            all_posts = posts.query.order_by(posts.date_posted)
+            return render_template('blog_posts.html', all_posts=all_posts)
+    else:
+        flash("Access denied!")
         all_posts = posts.query.order_by(posts.date_posted)
         return render_template('blog_posts.html', all_posts=all_posts)
 
