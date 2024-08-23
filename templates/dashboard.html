@@ -3,16 +3,41 @@
 {% block content %}
 
 {% for message in get_flashed_messages() %}
-<div class="alert alert-success alert-dismissible show" role="alert">
+<div class="alert alert-warning alert-dismissible show" role="alert">
     {{ message }}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 {% endfor %}
 
 
-<h1>Login</h1><br>
-<p style="color:green">Logged in Successfully</p>
-<a href="{{ url_for('logout') }}">Log Out</a>
+<h1>Dashboard</h1><br>
+
+<div class="card">
+    <div class="card-header">
+        {{ current_user.name }}
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">{{ current_user.name }}'s Dashboard</h5>
+        <p class="card-text">
+            <strong>Name:</strong>
+            {{ current_user.name }}<br>
+
+            <strong>Username:</strong>
+            {{ current_user.username }}<br>
+
+            <strong>Email:</strong>
+            {{ current_user.email }}<br>
+
+            <strong>Favorite color:</strong>
+            {{ current_user.color }}<br>
+
+            <strong>Date Joined:</strong>
+            {{ current_user.date_added }}<br>
+        </p>
+        <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a>
+    </div>
+</div>
+
 <br>
 
 
