@@ -14,7 +14,7 @@
     <h1>{{ view_post.title }}</h1><br>
     <h3><small>By {{ view_post.poster.name }}</small></h3><br>
     <h5>Date : {{ view_post.date_posted }}</h5><br>
-    <h5>{{ view_post.content }}</h5><br>
+    <h5>{{ view_post.content|safe }}</h5><br>
     {% if view_post.poster_id == current_user.id %}
     <a href="{{ url_for('edit_post',id=view_post.id)}}" class="btn btn-outline-secondary">Edit Blog</a>
     <a href="{{ url_for('delete_post',id=view_post.id)}}" class="btn btn-outline-danger">Delete Blog</a>

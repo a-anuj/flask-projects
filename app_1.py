@@ -6,8 +6,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import date
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from webforms import UserForm, PostForm, SimpleForm, PasswordForm, LoginForm, SearchForm
+from flask_ckeditor import CKEditor
 
 app = Flask(__name__)
+ckeditor = CKEditor(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:anuj2006@localhost/list_users'
 app.config['SECRET_KEY'] = "mahi@1234"
 db = SQLAlchemy(app)
