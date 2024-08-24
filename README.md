@@ -18,6 +18,10 @@ This is a basic Flask application to write/view blogs.
 - <strong>Flask-SQLAlchemy </strong>: Maps database tables to Python objects.
 - <strong>Flask-WTF</strong>: Form handling and validation
 - <strong>werkzeug </strong>: Python library for handling web requests.
+- <strong>HTML</strong> : Frontend part of the web-application
+- <strong>Bootstrap CSS</strong> : Styling the webpages
+- <strong>Jinja2 </strong>: Render the templates
+- <strong>Git</strong> : Version Control
 
 #### Prerequisites
 - Python
