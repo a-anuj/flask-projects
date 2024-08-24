@@ -13,6 +13,11 @@ This is a basic Flask application to write/view blogs.
 - Jinja2 Templating
 - Extensible
 
+### Technologies used
+- <strong>Flask</strong> : Lightweight microframework for building Python web applications.
+- <strong>Flask-SQLAlchemy </strong>: Maps database tables to Python objects.
+- <strong>Flask-WTF</strong>: Form handling and validation
+- <strong>werkzeug </strong>: Python library for handling web requests.
 
 #### Prerequisites
 - Python
