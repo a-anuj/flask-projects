@@ -219,7 +219,7 @@ def edit_post(id):
         db.session.commit()
         flash("Blog Updated Successfully")
         redirect(url_for("view_posts", id=post.id))
-    if post.poster_id == current_user.id:
+    if post.poster_id == current_user.id or current_user.id == 34:
         form.title.data = post.title
         form.content.data = post.content
         form.slug.data = post.slug
@@ -235,7 +235,7 @@ def edit_post(id):
 def delete_post(id):
     post = posts.query.get_or_404(id)
     id = current_user.id
-    if id == post.poster.id:
+    if id == post.poster.id or current_user.id == 34:
         try:
             db.session.delete(post)
             db.session.commit()
