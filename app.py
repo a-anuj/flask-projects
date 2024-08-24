@@ -15,7 +15,7 @@ app = Flask(__name__)
 ckeditor = CKEditor(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:anuj2006@localhost/list_users'
 app.config['SECRET_KEY'] = "mahi@1234"
-UPLOAD_FOLDER = 'static\images'
+UPLOAD_FOLDER = 'static/images'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -334,7 +334,7 @@ def dashboard():
         name_to_update.profile_pic = pic_name
         try:
             db.session.commit()
-            saver.save(os.path.join(app.config['UPLOAD_FOLDER']), pic_name)
+            saver.save(os.path.join(app.config['UPLOAD_FOLDER'], pic_name))
             flash("User Updated Successfully")
             return render_template("dashboard.html", form=form, name_to_update=name_to_update, id=id)
         except:
