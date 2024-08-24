@@ -6,14 +6,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{url_for('findName',username='anuj')}} ">User Profile</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{url_for('name_for_form')}} ">Name</a>
-                </li>
-
 
                 {% if current_user.is_authenticated %}
 

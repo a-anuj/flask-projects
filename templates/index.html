@@ -6,14 +6,21 @@
     <title>WEBPAGE</title>
 </head>
 
-<body>
 
-<h1> Hello All</h1>
-<h2>Concepts which I know to work with</h2>
-{% for item in learn_list %}
-    <strong>{{ item|title }}</strong><br>
-{% endfor %}
-</body>
+<h1>Concepts which I know to work with</h1>
+<br>
 
+    <table class="table table-hover table-bordered table-striped">
+        {% for item in learn_list  %}
+        <tr>
+            <td>
+                {{ item|title }} <br>
+            </td>
+
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
 </html>
 {% endblock %}
