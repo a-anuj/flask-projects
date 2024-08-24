@@ -11,13 +11,36 @@
 
 
 <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
-    <h1>{{ view_post.title }}</h1><br>
-    <h3><small>By {{ view_post.poster.name }}</small></h3><br>
-    <h5>Date : {{ view_post.date_posted }}</h5><br>
+    <h1>{{ view_post.title }}</h1>
+    <h5><small>By {{ view_post.poster.name }}</small></h5>
+    <h5><small>Date : {{ view_post.date_posted }}</small></h5><br>
     <h5>{{ view_post.content|safe }}</h5><br>
-    {% if post.poster.about_author%}
-    {{ view_post.poster.about_author }}
-    {% endif %}
+
+    <div class="card mb-3">
+        <div class="row no-gutters">
+            <div class="col-md-2">
+                {% if view_post.poster.profile_pic %}
+                    <img src="{{ url_for('static', filename='images/' + view_post.poster.profile_pic)}}" width="150" height="150" align="left">
+                {% else %}
+                    <img src="{{ url_for('static', filename='images/default_profile_pic.png') }}" width="150" align="left">
+                {% endif %}
+            </div>
+        <div class="col-md-10">
+            <div class="card-body">
+                <h5 class="card-title">
+                    {{ view_post.poster.name }}
+                </h5>
+                <p class="card-text">
+                    {% if view_post.poster.about_author%}
+                    {{ view_post.poster.about_author }}
+                    {% else %}
+                    Author has no profile yet...
+                    <br><br>
+                    {% endif %}
+                </p>
+            </div></div>
+        </div></div>
+</div>
     {% if view_post.poster_id == current_user.id %}
     <a href="{{ url_for('edit_post',id=view_post.id)}}" class="btn btn-outline-secondary">Edit Blog</a>
     <a href="{{ url_for('delete_post',id=view_post.id)}}" class="btn btn-outline-danger">Delete Blog</a>
