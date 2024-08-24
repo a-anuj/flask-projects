@@ -1,6 +1,19 @@
 # Flask Project
 This is a basic Flask application to write/view blogs.
 
+### Why Flask?
+- Flask is a lightweight web framework for Python, designed to help developers build web applications quickly and with minimal overhead. 
+  
+- It's known as a "micro-framework" because it provides the essentials to get started with web development while giving you the flexibility to add more components as needed.
+
+#### Advantages of flask
+- Lightweight and flexible
+- Simplicity
+- Modular
+- Jinja2 Templating
+- Extensible
+
+
 #### Prerequisites
 - Python
 - pip (Python Package Installer)
@@ -58,16 +71,4 @@ This is a basic Flask application to write/view blogs.
   ```
   flask db upgrade
   ```
-
-### Why Flask?
-- Flask is a lightweight web framework for Python, designed to help developers build web applications quickly and with minimal overhead. 
-  
-- It's known as a "micro-framework" because it provides the essentials to get started with web development while giving you the flexibility to add more components as needed.
-
-#### Advantages of flask
-- Lightweight and flexible
-- Simplicity
-- Modular
-- Jinja2 Templating
-- Extensible
 
