@@ -129,21 +129,25 @@ def add_user():
 
 
 @app.route('/delete/<int:id>')
+@login_required
 def delete(id):
     form = UserForm()
     name = None
-    name_to_delete = Users.query.get_or_404(id)
-    try:
-        db.session.delete(name_to_delete)
-        db.session.commit()
-        flash("User updated successfully")
-        our_users = Users.query.order_by(Users.date_added)
-        return render_template("add_user.html", form=form, name=name, our_users=our_users)
-    except:
-        flash("Error Occurred!")
-        our_users = Users.query.order_by(Users.date_added)
-        return render_template("add_user.html", form=form, name=name, our_users=our_users)
-
+    if id == current_user.id:
+        name_to_delete = Users.query.get_or_404(id)
+        try:
+            db.session.delete(name_to_delete)
+            db.session.commit()
+            flash("User updated successfully")
+            our_users = Users.query.order_by(Users.date_added)
+            return render_template("add_user.html", form=form, name=name, our_users=our_users)
+        except:
+            flash("Error Occurred!")
+            our_users = Users.query.order_by(Users.date_added)
+            return render_template("add_user.html", form=form, name=name, our_users=our_users)
+    else:
+        flash("Sorry You cannot delete another user")
+        return redirect(url_for('dashboard'))
 
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
