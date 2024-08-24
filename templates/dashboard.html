@@ -34,6 +34,9 @@
             <strong>Favorite color:</strong>
             {{ current_user.color }}<br>
 
+            <strong>About author:</strong>
+            {{ current_user.about_author }}<br>
+
             <strong>Date Joined:</strong>
             {{ current_user.date_added }}<br>
         </p>
@@ -72,6 +75,12 @@
         {{ form.color.label(class="form-label") }}
         {{ form.color(class="form-control", value = name_to_update.color) }}
         <br>
+
+        {{ form.about_author.label(class="form-label") }}
+        <textarea name="about_author" class="form-control">{{ name_to_update.about_author }}
+        </textarea>
+        <br>
+
         {{ form.submit(class="btn btn-secondary") }}
         <a href="{{ url_for('delete', id = id )}}" class = "btn btn-danger">Delete</a>
     </form>

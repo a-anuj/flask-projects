@@ -31,6 +31,7 @@ class Users(db.Model, UserMixin):
     username = db.Column(db.String(50), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False)
     color = db.Column(db.String(120))
+    about_author = db.Column(db.Text(500), nullable=True)
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
     password_hash = db.Column(db.String(200))
     all_posts = db.relationship('posts', backref='poster')
@@ -146,6 +147,7 @@ def update(id):
         name_to_update.name = request.form['name']
         name_to_update.email = request.form['email']
         name_to_update.color = request.form['color']
+        name_to_update.about_author = request.form['about_author']
         try:
             db.session.commit()
             flash("User Updated Successfully")
@@ -314,6 +316,7 @@ def dashboard():
         name_to_update.email = request.form['email']
         name_to_update.color = request.form['color']
         name_to_update.username = request.form['username']
+        name_to_update.about_author = request.form['about_author']
         try:
             db.session.commit()
             flash("User Updated Successfully")
